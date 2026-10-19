@@ -1,0 +1,35 @@
+name: Log Hike Day Decision
+
+on:
+  workflow_dispatch:
+    inputs:
+      city:
+        description: 'Candidate city the decision was made for (e.g. Beijing or Guiyang)'
+        required: true
+        type: string
+      date:
+        description: 'Target hike day (YYYY-MM-DD)'
+        required: true
+        type: string
+      decision:
+        description: 'Final call: GO or POSTPONE'
+        required: true
+        type: string
+      alert_headline:
+        description: 'Most serious active official alert headline across candidate cities, or "none"'
+        required: true
+        type: string
+
+jobs:
+  log-decision:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print the decision record
+        run: |
+          echo "=== Weather Hike Day Decision Log ==="
+          echo "City:            ${{ github.event.inputs.city }}"
+          echo "Date:            ${{ github.event.inputs.date }}"
+          echo "Decision:        ${{ github.event.inputs.decision }}"
+          echo "Alert headline:  ${{ github.event.inputs.alert_headline }}"
+          echo "Logged at (UTC): $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          echo "Triggered by:    ${{ github.actor }}"
